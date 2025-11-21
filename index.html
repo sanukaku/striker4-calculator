@@ -45,117 +45,132 @@
             margin-bottom: 15px;
         }
 
-        .input-section {
-            margin-bottom: 15px;
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
         }
 
-        label {
-            display: block;
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .depth-label {
             font-size: 1rem;
             font-weight: bold;
             color: #333;
+            text-align: center;
             margin-bottom: 10px;
         }
 
-        .stepper {
+        .slider-container {
             display: flex;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 12px;
+            gap: 10px;
+            margin-top: 25px;
         }
 
-        .stepper-button {
-            width: 42px;
-            height: 42px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border: 2px solid #2a5298;
-            border-radius: 50%;
-            background: #fff;
-            color: #2a5298;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
-            user-select: none;
-        }
-
-        .stepper-button:hover:not(:disabled) {
-            background: #2a5298;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        .stepper-button:active:not(:disabled) {
-            transform: scale(0.95);
-        }
-
-        .stepper-button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .stepper-display {
-            font-size: 1.6rem;
+        .depth-display {
+            font-size: 3rem;
             font-weight: bold;
             color: #1e3c72;
-            min-width: 70px;
             text-align: center;
+            min-width: 120px;
         }
 
-        .depth-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+        .slider-wrapper {
+            position: relative;
+            height: 240px;
+            display: flex;
+            align-items: center;
         }
 
-        .depth-button {
-            padding: 10px 6px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: #f8f9fa;
-            color: #333;
+        .slider-track {
+            position: absolute;
+            width: 40px;
+            height: 240px;
+            background: linear-gradient(to bottom,
+                rgba(135, 206, 250, 0.3) 0%,
+                rgba(30, 144, 255, 0.5) 50%,
+                rgba(0, 0, 139, 0.7) 100%);
+            border-radius: 20px;
+            border: 2px solid #2a5298;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: slider-vertical;
+            appearance: slider-vertical;
+            width: 40px;
+            height: 240px;
+            background: transparent;
+            position: relative;
+            z-index: 2;
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            touch-action: manipulation;
-            user-select: none;
         }
 
-        .depth-button:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 50px;
+            height: 50px;
+            background: #2a5298;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .depth-button:active {
-            transform: translateY(0);
+        input[type="range"]::-moz-range-thumb {
+            width: 50px;
+            height: 50px;
+            background: #2a5298;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .depth-button.selected {
-            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
-            color: #fff;
-            border-color: #1e3c72;
-            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        .depth-indicators {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 240px;
+            margin-left: 10px;
         }
+
+        .indicator {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2a5298;
+            line-height: 1;
+        }
+
+        .arrow {
+            font-size: 1.2rem;
+        }
+
 
         .results {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .result-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
-            padding: 12px;
+            padding: 15px;
             color: #fff;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
@@ -192,18 +207,18 @@
         }
 
         .result-value {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: bold;
             text-align: center;
         }
 
         .unit {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             margin-left: 3px;
         }
 
         .info {
-            margin-top: 12px;
+            margin-top: 15px;
             padding: 12px;
             background: #f0f4f8;
             border-radius: 10px;
@@ -227,29 +242,41 @@
                 font-size: 1.2rem;
             }
 
-            .stepper-button {
-                width: 38px;
-                height: 38px;
-                font-size: 1.2rem;
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
 
-            .stepper-display {
-                font-size: 1.5rem;
-                min-width: 60px;
+            .depth-display {
+                font-size: 2rem;
+                min-width: 80px;
             }
 
-            .depth-grid {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 5px;
+            .slider-wrapper {
+                height: 180px;
             }
 
-            .depth-button {
-                padding: 8px 4px;
-                font-size: 0.85rem;
+            .slider-track,
+            input[type="range"] {
+                height: 180px;
             }
+
+            .slider-container {
+                margin-top: 20px;
+            }
+
+            .depth-indicators {
+                height: 180px;
+                font-size: 0.9rem;
+            }
+
+            .arrow {
+                font-size: 1rem;
+            }
+
 
             .result-value {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
             }
 
             .result-label {
@@ -271,38 +298,49 @@
         <h1>Garmin STRIKER4<br>照射範囲計算機</h1>
         <div class="subtitle">湖底での照射範囲を計算</div>
 
-        <div class="input-section">
-            <label>水深を選択</label>
+        <div class="main-content">
+            <!-- 左パネル：計算結果 -->
+            <div class="left-panel">
+                <div class="results" id="results">
+                    <div class="result-card wide">
+                        <div class="result-header">
+                            <div class="frequency">77Hz</div>
+                            <div class="angle">広角 45°</div>
+                        </div>
+                        <div class="result-label">照射範囲円の直径</div>
+                        <div class="result-value">
+                            <span id="result77"></span><span class="unit">m</span>
+                        </div>
+                    </div>
 
-            <div class="stepper">
-                <button class="stepper-button" id="btnMinus" onclick="decrementDepth()">−</button>
-                <div class="stepper-display" id="stepperDisplay">−</div>
-                <button class="stepper-button" id="btnPlus" onclick="incrementDepth()">+</button>
+                    <div class="result-card narrow">
+                        <div class="result-header">
+                            <div class="frequency">200Hz</div>
+                            <div class="angle">狭角 15°</div>
+                        </div>
+                        <div class="result-label">照射範囲円の直径</div>
+                        <div class="result-value">
+                            <span id="result200"></span><span class="unit">m</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="depth-grid" id="depthGrid"></div>
-        </div>
+            <!-- 右パネル：水深スライダー -->
+            <div class="right-panel">
+                <div class="depth-label">水深</div>
+                <div class="depth-display" id="depthDisplay">5m</div>
 
-        <div class="results" id="results" style="display: none;">
-            <div class="result-card wide">
-                <div class="result-header">
-                    <div class="frequency">77Hz</div>
-                    <div class="angle">広角 45°</div>
-                </div>
-                <div class="result-label">照射範囲円の直径</div>
-                <div class="result-value">
-                    <span id="result77"></span><span class="unit">m</span>
-                </div>
-            </div>
-
-            <div class="result-card narrow">
-                <div class="result-header">
-                    <div class="frequency">200Hz</div>
-                    <div class="angle">狭角 15°</div>
-                </div>
-                <div class="result-label">照射範囲円の直径</div>
-                <div class="result-value">
-                    <span id="result200"></span><span class="unit">m</span>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <div class="slider-track"></div>
+                        <input type="range" id="depthSlider" min="0" max="14" value="3" orient="vertical">
+                    </div>
+                    <div class="depth-indicators">
+                        <div class="indicator">浅</div>
+                        <div class="indicator arrow">↕</div>
+                        <div class="indicator">深</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -314,105 +352,25 @@
     </div>
 
     <script>
-        // 水深のオプション（2-10mは1m刻み、15-50mは5m刻み、35mと45mを除く）
+        // 水深のオプション（浅い順：上が浅く、下が深く）
         const depths = [2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50];
-        let selectedDepth = null;
+        const slider = document.getElementById('depthSlider');
+        const depthDisplay = document.getElementById('depthDisplay');
 
-        // 水深ボタンを生成
-        function initDepthButtons() {
-            const grid = document.getElementById('depthGrid');
-            depths.forEach(depth => {
-                const button = document.createElement('button');
-                button.className = 'depth-button';
-                button.textContent = depth + 'm';
-                button.onclick = () => selectDepth(depth);
-                button.id = 'btn-' + depth;
-                grid.appendChild(button);
-            });
+        // スライダーの変更イベント（値を反転）
+        slider.addEventListener('input', function() {
+            const index = 14 - parseInt(this.value); // 反転: 0→14, 14→0
+            const depth = depths[index];
+            updateDepth(depth);
+        });
+
+        function updateDepth(depth) {
+            depthDisplay.textContent = depth + 'm';
+            calculate(depth);
         }
 
-        // 水深を選択
-        function selectDepth(depth) {
-            // 前の選択を解除
-            document.querySelectorAll('.depth-button').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            // 新しい選択を設定
-            const button = document.getElementById('btn-' + depth);
-            if (button) {
-                button.classList.add('selected');
-            }
-            selectedDepth = depth;
-
-            // ステッパー表示を更新
-            updateStepperDisplay();
-
-            // 計算を実行
-            calculate();
-        }
-
-        // ステッパー表示を更新
-        function updateStepperDisplay() {
-            const display = document.getElementById('stepperDisplay');
-            const btnMinus = document.getElementById('btnMinus');
-            const btnPlus = document.getElementById('btnPlus');
-
-            if (selectedDepth === null) {
-                display.textContent = '−';
-                btnMinus.disabled = true;
-                btnPlus.disabled = true;
-            } else {
-                display.textContent = selectedDepth + 'm';
-
-                // 現在の水深のインデックスを取得
-                const currentIndex = depths.indexOf(selectedDepth);
-
-                // -ボタンの有効/無効
-                btnMinus.disabled = (currentIndex <= 0);
-
-                // +ボタンの有効/無効
-                btnPlus.disabled = (currentIndex >= depths.length - 1);
-            }
-        }
-
-        // 水深を減らす
-        function decrementDepth() {
-            if (selectedDepth === null) {
-                selectDepth(depths[0]);
-                return;
-            }
-
-            const currentIndex = depths.indexOf(selectedDepth);
-            if (currentIndex > 0) {
-                selectDepth(depths[currentIndex - 1]);
-            }
-        }
-
-        // 水深を増やす
-        function incrementDepth() {
-            if (selectedDepth === null) {
-                selectDepth(depths[0]);
-                return;
-            }
-
-            const currentIndex = depths.indexOf(selectedDepth);
-            if (currentIndex < depths.length - 1) {
-                selectDepth(depths[currentIndex + 1]);
-            }
-        }
-
-        function calculate() {
-            if (!selectedDepth) {
-                document.getElementById('results').style.display = 'none';
-                return;
-            }
-
-            const depth = selectedDepth;
-
+        function calculate(depth) {
             // 77Hz (45度) の計算
-            // 直径 = 2 × 水深 × tan(角度/2)
-            // 45度 = 45 * (Math.PI / 180) ラジアン
             const angle77 = 45 * (Math.PI / 180);
             const diameter77 = 2 * depth * Math.tan(angle77 / 2);
 
@@ -423,15 +381,11 @@
             // 結果を表示（小数点第1位まで）
             document.getElementById('result77').textContent = diameter77.toFixed(1);
             document.getElementById('result200').textContent = diameter200.toFixed(1);
-
-            // 結果エリアを表示
-            document.getElementById('results').style.display = 'grid';
         }
 
-        // ページ読み込み時に水深ボタンを初期化
-        initDepthButtons();
-        // デフォルトで5mを選択
-        selectDepth(5);
+        // 初期表示（5m、index=3、スライダー値=11）
+        slider.value = 11; // 14 - 3 = 11
+        updateDepth(5);
     </script>
 </body>
 </html>
