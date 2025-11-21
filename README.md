@@ -33,19 +33,6 @@ https://sanukaku.github.io/striker4-calculator/
 
 詳細な仕様は [SPECIFICATION.md](SPECIFICATION.md) を参照してください。
 
-## 更新方法
-
-ローカルでindex.htmlを編集後、以下のコマンドで更新：
-
-```bash
-cd /c/work/gyotan
-git add index.html
-git commit -m "更新内容の説明"
-git push
-```
-
-数分後にGitHub Pagesに自動反映されます。
-
 ## リポジトリ情報
 
 - **GitHubリポジトリ**: https://github.com/sanukaku/striker4-calculator
@@ -53,4 +40,4 @@ git push
 
 ## ライセンス
 
-このプロジェクトは個人使用を目的としています。
+このプロジェクトは個人の学習・研究を目的としています。
