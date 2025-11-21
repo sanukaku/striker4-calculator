@@ -144,13 +144,14 @@
 
         .results {
             display: grid;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
         .result-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             color: #fff;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
@@ -164,37 +165,37 @@
         }
 
         .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .frequency {
             font-size: 1.1rem;
             font-weight: bold;
+            margin-bottom: 2px;
         }
 
         .angle {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             opacity: 0.9;
         }
 
         .result-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             opacity: 0.9;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
+            text-align: center;
         }
 
         .result-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             text-align: center;
         }
 
         .unit {
-            font-size: 1.3rem;
-            margin-left: 5px;
+            font-size: 1.2rem;
+            margin-left: 3px;
         }
 
         .info {
@@ -244,11 +245,19 @@
             }
 
             .result-value {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
 
             .result-label {
-                font-size: 0.75rem;
+                font-size: 0.65rem;
+            }
+
+            .frequency {
+                font-size: 1rem;
+            }
+
+            .angle {
+                font-size: 0.7rem;
             }
         }
     </style>
