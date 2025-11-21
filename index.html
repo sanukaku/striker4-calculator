@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garmin Striker4 照射範囲計算機</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 20px 15px;
+        }
+
+        h1 {
+            color: #1e3c72;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .input-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stepper-button {
+            width: 42px;
+            height: 42px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border: 2px solid #2a5298;
+            border-radius: 50%;
+            background: #fff;
+            color: #2a5298;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stepper-button:hover:not(:disabled) {
+            background: #2a5298;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .stepper-button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .stepper-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .stepper-display {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #1e3c72;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .depth-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .depth-button {
+            padding: 10px 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .depth-button:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .depth-button:active {
+            transform: translateY(0);
+        }
+
+        .depth-button.selected {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: #fff;
+            border-color: #1e3c72;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .results {
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-card.wide {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .result-card.narrow {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .frequency {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .angle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .unit {
+            font-size: 1.3rem;
+            margin-left: 5px;
+        }
+
+        .info {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f0f4f8;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .stepper-button {
+                width: 38px;
+                height: 38px;
+                font-size: 1.2rem;
+            }
+
+            .stepper-display {
+                font-size: 1.5rem;
+                min-width: 60px;
+            }
+
+            .depth-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 5px;
+            }
+
+            .depth-button {
+                padding: 8px 4px;
+                font-size: 0.85rem;
+            }
+
+            .result-value {
+                font-size: 1.8rem;
+            }
+
+            .result-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Garmin Striker4<br>照射範囲計算機</h1>
+        <div class="subtitle">湖底での照射範囲を計算</div>
+
+        <div class="input-section">
+            <label>水深を選択</label>
+
+            <div class="stepper">
+                <button class="stepper-button" id="btnMinus" onclick="decrementDepth()">−</button>
+                <div class="stepper-display" id="stepperDisplay">−</div>
+                <button class="stepper-button" id="btnPlus" onclick="incrementDepth()">+</button>
+            </div>
+
+            <div class="depth-grid" id="depthGrid"></div>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <div class="result-card wide">
+                <div class="result-header">
+                    <div class="frequency">77Hz</div>
+                    <div class="angle">広角 45°</div>
+                </div>
+                <div class="result-label">照射範囲円の直径</div>
+                <div class="result-value">
+                    <span id="result77"></span><span class="unit">m</span>
+                </div>
+            </div>
+
+            <div class="result-card narrow">
+                <div class="result-header">
+                    <div class="frequency">200Hz</div>
+                    <div class="angle">狭角 15°</div>
+                </div>
+                <div class="result-label">照射範囲円の直径</div>
+                <div class="result-value">
+                    <span id="result200"></span><span class="unit">m</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info">
+            <div class="info-title">計算について</div>
+            77Hzは広角照射で広い範囲をカバーし、200Hzは狭角照射で詳細な情報を取得できます。水深が深くなるほど照射範囲は広がります。
+        </div>
+    </div>
+
+    <script>
+        // 水深のオプション（2-10mは1m刻み、15-50mは5m刻み、35mと45mを除く）
+        const depths = [2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50];
+        let selectedDepth = null;
+
+        // 水深ボタンを生成
+        function initDepthButtons() {
+            const grid = document.getElementById('depthGrid');
+            depths.forEach(depth => {
+                const button = document.createElement('button');
+                button.className = 'depth-button';
+                button.textContent = depth + 'm';
+                button.onclick = () => selectDepth(depth);
+                button.id = 'btn-' + depth;
+                grid.appendChild(button);
+            });
+        }
+
+        // 水深を選択
+        function selectDepth(depth) {
+            // 前の選択を解除
+            document.querySelectorAll('.depth-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // 新しい選択を設定
+            const button = document.getElementById('btn-' + depth);
+            if (button) {
+                button.classList.add('selected');
+            }
+            selectedDepth = depth;
+
+            // ステッパー表示を更新
+            updateStepperDisplay();
+
+            // 計算を実行
+            calculate();
+        }
+
+        // ステッパー表示を更新
+        function updateStepperDisplay() {
+            const display = document.getElementById('stepperDisplay');
+            const btnMinus = document.getElementById('btnMinus');
+            const btnPlus = document.getElementById('btnPlus');
+
+            if (selectedDepth === null) {
+                display.textContent = '−';
+                btnMinus.disabled = true;
+                btnPlus.disabled = true;
+            } else {
+                display.textContent = selectedDepth + 'm';
+
+                // 現在の水深のインデックスを取得
+                const currentIndex = depths.indexOf(selectedDepth);
+
+                // -ボタンの有効/無効
+                btnMinus.disabled = (currentIndex <= 0);
+
+                // +ボタンの有効/無効
+                btnPlus.disabled = (currentIndex >= depths.length - 1);
+            }
+        }
+
+        // 水深を減らす
+        function decrementDepth() {
+            if (selectedDepth === null) {
+                selectDepth(depths[0]);
+                return;
+            }
+
+            const currentIndex = depths.indexOf(selectedDepth);
+            if (currentIndex > 0) {
+                selectDepth(depths[currentIndex - 1]);
+            }
+        }
+
+        // 水深を増やす
+        function incrementDepth() {
+            if (selectedDepth === null) {
+                selectDepth(depths[0]);
+                return;
+            }
+
+            const currentIndex = depths.indexOf(selectedDepth);
+            if (currentIndex < depths.length - 1) {
+                selectDepth(depths[currentIndex + 1]);
+            }
+        }
+
+        function calculate() {
+            if (!selectedDepth) {
+                document.getElementById('results').style.display = 'none';
+                return;
+            }
+
+            const depth = selectedDepth;
+
+            // 77Hz (45度) の計算
+            // 直径 = 2 × 水深 × tan(角度/2)
+            // 45度 = 45 * (Math.PI / 180) ラジアン
+            const angle77 = 45 * (Math.PI / 180);
+            const diameter77 = 2 * depth * Math.tan(angle77 / 2);
+
+            // 200Hz (15度) の計算
+            const angle200 = 15 * (Math.PI / 180);
+            const diameter200 = 2 * depth * Math.tan(angle200 / 2);
+
+            // 結果を表示（小数点第1位まで）
+            document.getElementById('result77').textContent = diameter77.toFixed(1);
+            document.getElementById('result200').textContent = diameter200.toFixed(1);
+
+            // 結果エリアを表示
+            document.getElementById('results').style.display = 'grid';
+        }
+
+        // ページ読み込み時に水深ボタンを初期化
+        initDepthButtons();
+        // デフォルトで5mを選択
+        selectDepth(5);
+    </script>
+</body>
+</html>
