@@ -22,8 +22,8 @@ https://sanukaku.github.io/striker4-calculator/
   - デフォルト値: 5m（詳細モード）
 
 - **同時計算表示**:
-  - 77Hz（45度）広角照射
-  - 200Hz（15度）狭角照射
+  - 77kHz（45度）広角照射
+  - 200kHz（15度）狭角照射
   - 照射範囲円の直径を小数点第1位まで表示
 
 - **スマホファースト設計**:
@@ -34,7 +34,9 @@ https://sanukaku.github.io/striker4-calculator/
 
 ## 技術仕様
 
-- 単一HTMLファイル構成（index.html）
+- HTMLファイル構成:
+  - index.html: メイン計算機
+  - how-it-works.html: 仕組み解説ページ
 - 外部CDN・ライブラリ不使用
 - 完全オフライン動作
 - 外部サーバーとの通信なし

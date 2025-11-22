@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魚群探知機の照射範囲について - STRIKER4 計算機</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2a5298;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            padding-left: 12px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #2a5298;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .formula {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #1565c0;
+        }
+
+        .note {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .note-title {
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            .diagram {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>魚群探知機の照射範囲について</h1>
+        <div class="subtitle">なぜ照射角と水深で照射範囲が決まるのか</div>
+
+        <h2>魚群探知機の仕組み</h2>
+        <p>
+            魚群探知機（魚探）は、振動子から超音波（音波）を水中に発射し、湖底や魚に反射して戻ってくる音波を検出することで、水深や魚の位置を測定する装置です。
+        </p>
+
+        <h3>超音波ビームの広がり</h3>
+        <p>
+            振動子から発射される超音波は、レーザーのように真っ直ぐ進むのではなく、<strong>円錐形（コーン状）に広がりながら進みます</strong>。この広がり方は、振動子の周波数によって決まります。
+        </p>
+
+        <div class="diagram">
+            <svg viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg">
+                <!-- 水面 -->
+                <line x1="0" y1="50" x2="400" y2="50" stroke="#2196f3" stroke-width="3" stroke-dasharray="10,5"/>
+                <text x="10" y="45" fill="#2196f3" font-size="14" font-weight="bold">水面</text>
+
+                <!-- ボート -->
+                <path d="M 180 20 L 220 20 L 230 40 L 170 40 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="2"/>
+
+                <!-- 振動子 -->
+                <rect x="195" y="40" width="10" height="15" fill="#455a64" stroke="#263238" stroke-width="1"/>
+                <circle cx="200" cy="55" r="3" fill="#ff5722"/>
+
+                <!-- 超音波ビーム (77Hz - 45度) -->
+                <g opacity="0.3">
+                    <path d="M 200 55 L 100 280 L 300 280 Z" fill="#ff9800" stroke="#f57c00" stroke-width="2"/>
+                </g>
+
+                <!-- 照射角の表示 -->
+                <path d="M 200 55 L 200 150" stroke="#1976d2" stroke-width="2" stroke-dasharray="5,3"/>
+                <path d="M 200 55 L 120 200" stroke="#1976d2" stroke-width="2" stroke-dasharray="5,3"/>
+                <text x="140" y="100" fill="#1976d2" font-size="14" font-weight="bold">45°</text>
+
+                <!-- 水深の表示 -->
+                <line x1="320" y1="55" x2="320" y2="280" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <line x1="320" y1="280" x2="320" y2="55" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="325" y="170" fill="#4caf50" font-size="16" font-weight="bold">水深</text>
+
+                <!-- 湖底 -->
+                <rect x="0" y="280" width="400" height="70" fill="#795548"/>
+                <line x1="0" y1="280" x2="400" y2="280" stroke="#5d4037" stroke-width="3"/>
+                <text x="10" y="300" fill="#fff" font-size="14" font-weight="bold">湖底</text>
+
+                <!-- 照射範囲の直径 -->
+                <line x1="100" y1="295" x2="300" y2="295" stroke="#e91e63" stroke-width="3" marker-start="url(#arrowhead2)" marker-end="url(#arrowhead2)"/>
+                <text x="160" y="320" fill="#e91e63" font-size="16" font-weight="bold">照射範囲</text>
+
+                <!-- Arrow markers -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                        <polygon points="0 0, 10 5, 0 10" fill="#4caf50"/>
+                    </marker>
+                    <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                        <polygon points="0 0, 10 5, 0 10" fill="#e91e63"/>
+                    </marker>
+                </defs>
+            </svg>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                77kHz（45度広角）の超音波ビームの広がり方
+            </p>
+        </div>
+
+        <h2>照射角度の意味</h2>
+        <p>
+            <strong>照射角度</strong>は、超音波ビームの円錐形の頂角を表します。Garmin STRIKER4では、2つの異なる周波数が使用されています：
+        </p>
+        <ul>
+            <li><strong>77kHz（45度）</strong>：広角で広い範囲をカバー。魚群の発見に適している。</li>
+            <li><strong>200kHz（15度）</strong>：狭角で詳細な情報を取得。湖底の地形や小さな魚の識別に適している。</li>
+        </ul>
+
+        <h2>なぜ水深で照射範囲が変わるのか</h2>
+        <p>
+            超音波ビームは円錐形に広がるため、<strong>水深が深くなるほど、湖底での照射範囲が広くなります</strong>。これは、懐中電灯を壁に当てた時、壁から離れるほど光の範囲が広がるのと同じ原理です。
+        </p>
+
+        <div class="diagram">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- 浅い場合 -->
+                <g>
+                    <text x="50" y="20" fill="#333" font-size="14" font-weight="bold">浅い水深（5m）</text>
+                    <line x1="0" y1="40" x2="150" y2="40" stroke="#2196f3" stroke-width="2"/>
+                    <rect x="65" y="25" width="20" height="10" fill="#8d6e63"/>
+                    <circle cx="75" cy="40" r="2" fill="#ff5722"/>
+                    <path d="M 75 40 L 40 120 L 110 120 Z" fill="#ff9800" opacity="0.3" stroke="#f57c00" stroke-width="1"/>
+                    <rect x="0" y="120" width="150" height="30" fill="#795548"/>
+                    <line x1="40" y1="135" x2="110" y2="135" stroke="#e91e63" stroke-width="2"/>
+                    <text x="55" y="155" fill="#e91e63" font-size="12" font-weight="bold">小</text>
+                </g>
+
+                <!-- 深い場合 -->
+                <g transform="translate(200, 0)">
+                    <text x="30" y="20" fill="#333" font-size="14" font-weight="bold">深い水深（20m）</text>
+                    <line x1="0" y1="40" x2="150" y2="40" stroke="#2196f3" stroke-width="2"/>
+                    <rect x="65" y="25" width="20" height="10" fill="#8d6e63"/>
+                    <circle cx="75" cy="40" r="2" fill="#ff5722"/>
+                    <path d="M 75 40 L 10 280 L 140 280 Z" fill="#ff9800" opacity="0.3" stroke="#f57c00" stroke-width="1"/>
+                    <rect x="0" y="280" width="150" height="30" fill="#795548"/>
+                    <line x1="10" y1="295" x2="140" y2="295" stroke="#e91e63" stroke-width="2"/>
+                    <text x="60" y="315" fill="#e91e63" font-size="12" font-weight="bold">大</text>
+                </g>
+            </svg>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                同じ照射角度でも、水深によって照射範囲が変わる
+            </p>
+        </div>
+
+        <h2>計算式の解説</h2>
+        <p>
+            湖底での照射範囲の直径は、以下の三角関数を使って計算できます：
+        </p>
+
+        <div class="formula">
+            照射範囲の直径 = 2 × 水深 × tan(照射角度 ÷ 2)
+        </div>
+
+        <h3>式の意味</h3>
+        <ul>
+            <li><strong>水深</strong>：振動子から湖底までの距離（高さ）</li>
+            <li><strong>照射角度 ÷ 2</strong>：円錐の中心線から側面までの角度（半角）</li>
+            <li><strong>tan(半角)</strong>：三角関数のタンジェント。高さに対する底辺の比率を求める</li>
+            <li><strong>2 × ...</strong>：半径を2倍して直径にする</li>
+        </ul>
+
+        <h3>計算例（77kHz、水深10m）</h3>
+        <p>
+            照射角度 = 45度<br>
+            半角 = 45 ÷ 2 = 22.5度<br>
+            tan(22.5°) ≈ 0.414<br>
+            半径 = 10m × 0.414 ≈ 4.14m<br>
+            <strong>直径 = 2 × 4.14m ≈ 8.3m</strong>
+        </p>
+
+        <div class="note">
+            <div class="note-title">実用上のポイント</div>
+            <ul style="margin-top: 10px;">
+                <li>浅い場所では照射範囲が狭く、ピンポイントで探索できる</li>
+                <li>深い場所では照射範囲が広く、広範囲をカバーできる</li>
+                <li>77kHz（広角）は魚群の発見に有利だが、解像度は低い</li>
+                <li>200kHz（狭角）は詳細な地形把握に有利だが、範囲は狭い</li>
+            </ul>
+        </div>
+
+        <h2>周波数による違い</h2>
+
+        <div class="diagram">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <!-- 77kHz -->
+                <g>
+                    <text x="25" y="20" fill="#333" font-size="14" font-weight="bold">77kHz (45度)</text>
+                    <rect x="65" y="30" width="20" height="10" fill="#8d6e63"/>
+                    <circle cx="75" cy="45" r="2" fill="#ff5722"/>
+                    <path d="M 75 45 L 20 220 L 130 220 Z" fill="#ff9800" opacity="0.3" stroke="#f57c00" stroke-width="2"/>
+                    <rect x="0" y="220" width="150" height="30" fill="#795548"/>
+                    <text x="45" y="275" fill="#e91e63" font-size="14" font-weight="bold">広い範囲</text>
+                </g>
+
+                <!-- 200kHz -->
+                <g transform="translate(200, 0)">
+                    <text x="20" y="20" fill="#333" font-size="14" font-weight="bold">200kHz (15度)</text>
+                    <rect x="65" y="30" width="20" height="10" fill="#8d6e63"/>
+                    <circle cx="75" cy="45" r="2" fill="#ff5722"/>
+                    <path d="M 75 45 L 55 220 L 95 220 Z" fill="#00bcd4" opacity="0.3" stroke="#0097a7" stroke-width="2"/>
+                    <rect x="0" y="220" width="150" height="30" fill="#795548"/>
+                    <text x="45" y="275" fill="#1976d2" font-size="14" font-weight="bold">狭い範囲</text>
+                </g>
+            </svg>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                同じ水深でも周波数によって照射範囲が大きく異なる
+            </p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">← 計算機に戻る</a>
+        </div>
+    </div>
+</body>
+</html>

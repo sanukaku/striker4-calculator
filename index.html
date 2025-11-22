@@ -248,6 +248,27 @@
             margin-bottom: 3px;
         }
 
+        .guide-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .guide-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .guide-link a:hover {
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 12px 10px;
@@ -348,6 +369,15 @@
                 padding: 10px;
                 margin-top: 10px;
             }
+
+            .guide-link {
+                margin-top: 10px;
+            }
+
+            .guide-link a {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -369,7 +399,7 @@
                 <div class="results" id="results">
                     <div class="result-card wide">
                         <div class="result-header">
-                            <div class="frequency">77Hz</div>
+                            <div class="frequency">77kHz</div>
                             <div class="angle">広角 45°</div>
                         </div>
                         <div class="result-label">照射範囲円の直径</div>
@@ -380,7 +410,7 @@
 
                     <div class="result-card narrow">
                         <div class="result-header">
-                            <div class="frequency">200Hz</div>
+                            <div class="frequency">200kHz</div>
                             <div class="angle">狭角 15°</div>
                         </div>
                         <div class="result-label">照射範囲円の直径</div>
@@ -409,7 +439,11 @@
 
         <div class="info">
             <div class="info-title">計算について</div>
-            77Hzは広角照射で広い範囲をカバーし、200Hzは狭角照射で詳細な情報を取得できます。水深が深くなるほど照射範囲は広がります。
+            77kHzは広角照射で広い範囲をカバーし、200kHzは狭角照射で詳細な情報を取得できます。水深が深くなるほど照射範囲は広がります。
+        </div>
+
+        <div class="guide-link">
+            <a href="how-it-works.html">照射範囲の仕組みを詳しく知る →</a>
         </div>
     </div>
 
@@ -486,11 +520,11 @@
         }
 
         function calculate(depth) {
-            // 77Hz (45度) の計算
+            // 77kHz (45度) の計算
             const angle77 = 45 * (Math.PI / 180);
             const diameter77 = 2 * depth * Math.tan(angle77 / 2);
 
-            // 200Hz (15度) の計算
+            // 200kHz (15度) の計算
             const angle200 = 15 * (Math.PI / 180);
             const diameter200 = 2 * depth * Math.tan(angle200 / 2);
 
