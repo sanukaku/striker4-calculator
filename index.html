@@ -45,38 +45,6 @@
             margin-bottom: 15px;
         }
 
-        .range-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            margin-bottom: 15px;
-        }
-
-        .range-btn {
-            flex: 1;
-            padding: 12px 10px;
-            background: #f0f4f8;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #666;
-            transition: all 0.3s ease;
-            line-height: 1.4;
-        }
-
-        .range-btn:hover {
-            background: #e3f2fd;
-            border-color: #2196f3;
-        }
-
-        .range-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-color: #667eea;
-            color: #fff;
-        }
 
         .main-content {
             display: grid;
@@ -235,7 +203,7 @@
 
         .guide-link {
             text-align: center;
-            margin-top: 0;
+            margin-top: 20px;
         }
 
         .guide-link a {
@@ -271,16 +239,6 @@
                 margin-bottom: 10px;
             }
 
-            .range-selector {
-                gap: 5px;
-                margin-top: 30px;
-                margin-bottom: 10px;
-            }
-
-            .range-btn {
-                padding: 10px 8px;
-                font-size: 0.7rem;
-            }
 
             .main-content {
                 grid-template-columns: 1fr 1fr;
@@ -354,7 +312,7 @@
             }
 
             .guide-link {
-                margin-top: 0;
+                margin-top: 15px;
             }
 
             .guide-link a {
@@ -413,51 +371,28 @@
             </div>
         </div>
 
-        <!-- レンジ切り替えボタン -->
-        <div class="range-selector">
-            <button class="range-btn active" data-range="fine">水深10mまで</button>
-            <button class="range-btn" data-range="medium">水深20mまで</button>
-            <button class="range-btn" data-range="wide">水深50mまで</button>
-        </div>
-
         <div class="guide-link">
             <a href="how-it-works.html">照射範囲の仕組みを詳しく知る →</a>
         </div>
     </div>
 
     <script>
-        // 3つのレンジモードの定義
-        const rangeConfig = {
-            fine: {
-                // 詳細モード: 1-10m, 0.5m刻み
-                depths: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10],
-                defaultDepth: 5,
-                defaultIndex: 8
-            },
-            medium: {
-                // 中範囲モード: 1-20m, 1m刻み
-                depths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-                defaultDepth: 10,
-                defaultIndex: 9
-            },
-            wide: {
-                // 広範囲モード: 2-50m, 2m刻み
-                depths: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50],
-                defaultDepth: 26,
-                defaultIndex: 12
-            }
-        };
+        // 水深の定義: 1-20m, 0.5m刻み
+        const depths = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20];
+        const defaultDepth = 5; // デフォルト5m
+        const defaultIndex = 8; // 配列内での5mの位置
 
-        let currentRange = 'fine';
         const slider = document.getElementById('depthSlider');
         const depthDisplay = document.getElementById('depthDisplay');
 
+        // スライダーの最大値を設定
+        const maxIndex = depths.length - 1;
+        slider.max = maxIndex;
+
         // スライダーの変更イベント（値を反転）
         slider.addEventListener('input', function() {
-            const config = rangeConfig[currentRange];
-            const maxIndex = config.depths.length - 1;
             const index = maxIndex - parseInt(this.value); // 反転
-            const depth = config.depths[index];
+            const depth = depths[index];
             updateDepth(depth);
         });
 
@@ -465,8 +400,6 @@
         slider.addEventListener('wheel', function(e) {
             e.preventDefault(); // ページスクロールを防止
 
-            const config = rangeConfig[currentRange];
-            const maxIndex = config.depths.length - 1;
             let currentValue = parseInt(this.value);
 
             // ホイールの方向に応じて値を増減
@@ -482,18 +415,13 @@
 
             // 更新イベントをトリガー
             const index = maxIndex - currentValue;
-            const depth = config.depths[index];
+            const depth = depths[index];
             updateDepth(depth);
         });
 
         function updateDepth(depth) {
-            // 詳細モード(fine)の場合のみ小数点第1位まで表示
-            if (currentRange === 'fine') {
-                depthDisplay.textContent = depth.toFixed(1) + 'm';
-            } else {
-                // 中範囲・広範囲は整数表示
-                depthDisplay.textContent = Math.round(depth) + 'm';
-            }
+            // 常に小数点第1位まで表示
+            depthDisplay.textContent = depth.toFixed(1) + 'm';
             calculate(depth);
         }
 
@@ -511,39 +439,10 @@
             document.getElementById('result200').textContent = diameter200.toFixed(1);
         }
 
-        // レンジ切り替え機能
-        function switchRange(rangeName) {
-            currentRange = rangeName;
-            const config = rangeConfig[rangeName];
-            const maxIndex = config.depths.length - 1;
-
-            // スライダーの最大値を更新
-            slider.max = maxIndex;
-
-            // デフォルト値を設定（反転計算）
-            const sliderValue = maxIndex - config.defaultIndex;
-            slider.value = sliderValue;
-
-            // 表示を更新
-            updateDepth(config.defaultDepth);
-
-            // ボタンのアクティブ状態を更新
-            document.querySelectorAll('.range-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-range="${rangeName}"]`).classList.add('active');
-        }
-
-        // レンジ切り替えボタンのイベントリスナー
-        document.querySelectorAll('.range-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const rangeName = this.getAttribute('data-range');
-                switchRange(rangeName);
-            });
-        });
-
-        // 初期表示（詳細モード、5m）
-        switchRange('fine');
+        // 初期表示（5m）
+        const initialSliderValue = maxIndex - defaultIndex;
+        slider.value = initialSliderValue;
+        updateDepth(defaultDepth);
     </script>
 </body>
 </html>
