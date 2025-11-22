@@ -357,7 +357,7 @@
                 <div class="slider-container">
                     <div class="slider-wrapper">
                         <div class="slider-track"></div>
-                        <input type="range" id="depthSlider" min="0" max="14" value="3" orient="vertical">
+                        <input type="range" id="depthSlider" min="0" max="18" value="8" orient="vertical">
                     </div>
                     <div class="depth-indicators">
                         <div class="indicator">浅</div>
@@ -376,19 +376,19 @@
 
     <script>
         // 水深のオプション（浅い順：上が浅く、下が深く）
-        const depths = [2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50];
+        const depths = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
         const slider = document.getElementById('depthSlider');
         const depthDisplay = document.getElementById('depthDisplay');
 
         // スライダーの変更イベント（値を反転）
         slider.addEventListener('input', function() {
-            const index = 14 - parseInt(this.value); // 反転: 0→14, 14→0
+            const index = 18 - parseInt(this.value); // 反転: 0→18, 18→0
             const depth = depths[index];
             updateDepth(depth);
         });
 
         function updateDepth(depth) {
-            depthDisplay.textContent = depth + 'm';
+            depthDisplay.textContent = depth.toFixed(1) + 'm';
             calculate(depth);
         }
 
@@ -406,8 +406,8 @@
             document.getElementById('result200').textContent = diameter200.toFixed(1);
         }
 
-        // 初期表示（5m、index=3、スライダー値=11）
-        slider.value = 11; // 14 - 3 = 11
+        // 初期表示（5m、index=8、スライダー値=10）
+        slider.value = 10; // 18 - 8 = 10
         updateDepth(5);
     </script>
 </body>
