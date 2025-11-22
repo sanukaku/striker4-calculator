@@ -45,6 +45,38 @@
             margin-bottom: 15px;
         }
 
+        .range-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .range-btn {
+            flex: 1;
+            padding: 12px 10px;
+            background: #f0f4f8;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .range-btn:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .range-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: #fff;
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -65,12 +97,18 @@
             justify-content: center;
         }
 
+        .depth-display-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
         .depth-label {
             font-size: 1rem;
             font-weight: bold;
             color: #333;
-            text-align: center;
-            margin-bottom: 10px;
         }
 
         .slider-container {
@@ -85,7 +123,6 @@
             font-size: 3rem;
             font-weight: bold;
             color: #1e3c72;
-            text-align: center;
             min-width: 120px;
         }
 
@@ -98,20 +135,20 @@
 
         .slider-track {
             position: absolute;
-            width: 40px;
+            width: 60px;
             height: 300px;
             background: linear-gradient(to bottom,
                 rgba(135, 206, 250, 0.3) 0%,
                 rgba(30, 144, 255, 0.5) 50%,
                 rgba(0, 0, 139, 0.7) 100%);
-            border-radius: 20px;
+            border-radius: 30px;
             border: 2px solid #2a5298;
         }
 
         input[type="range"] {
             -webkit-appearance: slider-vertical;
             appearance: slider-vertical;
-            width: 40px;
+            width: 60px;
             height: 300px;
             background: transparent;
             position: relative;
@@ -168,19 +205,19 @@
         }
 
         .result-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3a4db3 0%, #4d2a6b 100%);
             border-radius: 12px;
             padding: 19px;
             color: #fff;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
 
         .result-card.wide {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #c64dd8 0%, #c92a40 100%);
         }
 
         .result-card.narrow {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #1a7cc9 0%, #00b0c5 100%);
         }
 
         .result-header {
@@ -247,14 +284,33 @@
                 margin-bottom: 10px;
             }
 
+            .range-selector {
+                gap: 5px;
+                margin-bottom: 15px;
+            }
+
+            .range-btn {
+                padding: 10px 8px;
+                font-size: 0.7rem;
+            }
+
             .main-content {
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
 
+            .depth-display-wrapper {
+                gap: 5px;
+                margin-bottom: 5px;
+            }
+
             .depth-display {
                 font-size: 1.8rem;
                 min-width: 70px;
+            }
+
+            .depth-label {
+                font-size: 0.85rem;
             }
 
             .slider-wrapper {
@@ -263,7 +319,22 @@
 
             .slider-track,
             input[type="range"] {
+                width: 50px;
                 height: 250px;
+            }
+
+            .slider-track {
+                border-radius: 25px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                width: 45px;
+                height: 45px;
+            }
+
+            input[type="range"]::-moz-range-thumb {
+                width: 45px;
+                height: 45px;
             }
 
             .slider-container {
@@ -303,11 +374,6 @@
                 font-size: 0.65rem;
             }
 
-            .depth-label {
-                font-size: 0.85rem;
-                margin-bottom: 5px;
-            }
-
             .info {
                 font-size: 0.7rem;
                 padding: 10px;
@@ -320,6 +386,13 @@
     <div class="container">
         <h1>Garmin STRIKER4<br>照射範囲計算機</h1>
         <div class="subtitle">湖底での照射範囲を計算</div>
+
+        <!-- レンジ切り替えボタン -->
+        <div class="range-selector">
+            <button class="range-btn active" data-range="fine">水深10mまで</button>
+            <button class="range-btn" data-range="medium">水深20mまで</button>
+            <button class="range-btn" data-range="wide">水深50mまで</button>
+        </div>
 
         <div class="main-content">
             <!-- 左パネル：計算結果 -->
@@ -351,8 +424,10 @@
 
             <!-- 右パネル：水深スライダー -->
             <div class="right-panel">
-                <div class="depth-label">水深</div>
-                <div class="depth-display" id="depthDisplay">5m</div>
+                <div class="depth-display-wrapper">
+                    <div class="depth-label">水深</div>
+                    <div class="depth-display" id="depthDisplay">5m</div>
+                </div>
 
                 <div class="slider-container">
                     <div class="slider-wrapper">
@@ -375,20 +450,74 @@
     </div>
 
     <script>
-        // 水深のオプション（浅い順：上が浅く、下が深く）
-        const depths = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
+        // 3つのレンジモードの定義
+        const rangeConfig = {
+            fine: {
+                // 詳細モード: 1-10m, 0.5m刻み
+                depths: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10],
+                defaultDepth: 5,
+                defaultIndex: 8
+            },
+            medium: {
+                // 中範囲モード: 1-20m, 1m刻み
+                depths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                defaultDepth: 10,
+                defaultIndex: 9
+            },
+            wide: {
+                // 広範囲モード: 1-50m, 2m刻み（1m + 3mから49mまで2m刻み）
+                depths: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49],
+                defaultDepth: 25,
+                defaultIndex: 12
+            }
+        };
+
+        let currentRange = 'fine';
         const slider = document.getElementById('depthSlider');
         const depthDisplay = document.getElementById('depthDisplay');
 
         // スライダーの変更イベント（値を反転）
         slider.addEventListener('input', function() {
-            const index = 18 - parseInt(this.value); // 反転: 0→18, 18→0
-            const depth = depths[index];
+            const config = rangeConfig[currentRange];
+            const maxIndex = config.depths.length - 1;
+            const index = maxIndex - parseInt(this.value); // 反転
+            const depth = config.depths[index];
+            updateDepth(depth);
+        });
+
+        // マウスホイールで水深変更
+        slider.addEventListener('wheel', function(e) {
+            e.preventDefault(); // ページスクロールを防止
+
+            const config = rangeConfig[currentRange];
+            const maxIndex = config.depths.length - 1;
+            let currentValue = parseInt(this.value);
+
+            // ホイールの方向に応じて値を増減
+            if (e.deltaY < 0) {
+                // ホイールを上に回す → 値を増やす（水深が深くなる）
+                currentValue = Math.min(maxIndex, currentValue + 1);
+            } else {
+                // ホイールを下に回す → 値を減らす（水深が浅くなる）
+                currentValue = Math.max(0, currentValue - 1);
+            }
+
+            this.value = currentValue;
+
+            // 更新イベントをトリガー
+            const index = maxIndex - currentValue;
+            const depth = config.depths[index];
             updateDepth(depth);
         });
 
         function updateDepth(depth) {
-            depthDisplay.textContent = depth.toFixed(1) + 'm';
+            // 詳細モード(fine)の場合のみ小数点第1位まで表示
+            if (currentRange === 'fine') {
+                depthDisplay.textContent = depth.toFixed(1) + 'm';
+            } else {
+                // 中範囲・広範囲は整数表示
+                depthDisplay.textContent = Math.round(depth) + 'm';
+            }
             calculate(depth);
         }
 
@@ -406,9 +535,39 @@
             document.getElementById('result200').textContent = diameter200.toFixed(1);
         }
 
-        // 初期表示（5m、index=8、スライダー値=10）
-        slider.value = 10; // 18 - 8 = 10
-        updateDepth(5);
+        // レンジ切り替え機能
+        function switchRange(rangeName) {
+            currentRange = rangeName;
+            const config = rangeConfig[rangeName];
+            const maxIndex = config.depths.length - 1;
+
+            // スライダーの最大値を更新
+            slider.max = maxIndex;
+
+            // デフォルト値を設定（反転計算）
+            const sliderValue = maxIndex - config.defaultIndex;
+            slider.value = sliderValue;
+
+            // 表示を更新
+            updateDepth(config.defaultDepth);
+
+            // ボタンのアクティブ状態を更新
+            document.querySelectorAll('.range-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-range="${rangeName}"]`).classList.add('active');
+        }
+
+        // レンジ切り替えボタンのイベントリスナー
+        document.querySelectorAll('.range-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const rangeName = this.getAttribute('data-range');
+                switchRange(rangeName);
+            });
+        });
+
+        // 初期表示（詳細モード、5m）
+        switchRange('fine');
     </script>
 </body>
 </html>
