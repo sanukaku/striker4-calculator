@@ -49,7 +49,8 @@
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-bottom: 15px;
         }
 
         .range-btn {
@@ -232,40 +233,27 @@
             margin-left: 3px;
         }
 
-        .info {
-            margin-top: 15px;
-            padding: 12px;
-            background: #f0f4f8;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .info-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 3px;
-        }
-
         .guide-link {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 0;
         }
 
         .guide-link a {
             display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            padding: 8px 16px;
+            background: transparent;
+            color: #2a5298;
             text-decoration: none;
+            border: 2px solid #2a5298;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
         .guide-link a:hover {
+            background: #2a5298;
+            color: #fff;
             transform: translateY(-2px);
         }
 
@@ -285,7 +273,8 @@
 
             .range-selector {
                 gap: 5px;
-                margin-bottom: 15px;
+                margin-top: 15px;
+                margin-bottom: 10px;
             }
 
             .range-btn {
@@ -364,19 +353,13 @@
                 font-size: 0.65rem;
             }
 
-            .info {
-                font-size: 0.7rem;
-                padding: 10px;
-                margin-top: 10px;
-            }
-
             .guide-link {
-                margin-top: 10px;
+                margin-top: 0;
             }
 
             .guide-link a {
-                padding: 8px 16px;
-                font-size: 0.75rem;
+                padding: 6px 12px;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -385,13 +368,6 @@
     <div class="container">
         <h1>Garmin STRIKER4<br>照射範囲計算機</h1>
         <div class="subtitle">湖底での照射範囲を計算</div>
-
-        <!-- レンジ切り替えボタン -->
-        <div class="range-selector">
-            <button class="range-btn active" data-range="fine">水深10mまで</button>
-            <button class="range-btn" data-range="medium">水深20mまで</button>
-            <button class="range-btn" data-range="wide">水深50mまで</button>
-        </div>
 
         <div class="main-content">
             <!-- 左パネル：計算結果 -->
@@ -437,9 +413,11 @@
             </div>
         </div>
 
-        <div class="info">
-            <div class="info-title">計算について</div>
-            77kHzは広角照射で広い範囲をカバーし、200kHzは狭角照射で詳細な情報を取得できます。水深が深くなるほど照射範囲は広がります。
+        <!-- レンジ切り替えボタン -->
+        <div class="range-selector">
+            <button class="range-btn active" data-range="fine">水深10mまで</button>
+            <button class="range-btn" data-range="medium">水深20mまで</button>
+            <button class="range-btn" data-range="wide">水深50mまで</button>
         </div>
 
         <div class="guide-link">

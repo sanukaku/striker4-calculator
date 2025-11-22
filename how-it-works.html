@@ -116,16 +116,20 @@
         .back-link {
             display: inline-block;
             margin-top: 30px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            padding: 8px 16px;
+            background: transparent;
+            color: #2a5298;
             text-decoration: none;
+            border: 2px solid #2a5298;
             border-radius: 8px;
+            font-size: 0.75rem;
             font-weight: bold;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
         .back-link:hover {
+            background: #2a5298;
+            color: #fff;
             transform: translateY(-2px);
         }
 
@@ -144,6 +148,11 @@
 
             .diagram {
                 padding: 15px;
+            }
+
+            .back-link {
+                padding: 6px 12px;
+                font-size: 0.7rem;
             }
         }
     </style>
