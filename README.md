@@ -4,7 +4,7 @@ Garmin STRIKER4魚群探知機のエコー照射範囲を計算するWebアプ�
 
 ## 公開URL
 
-https://sanukaku.github.io/striker4-calculator/
+https://osakanalabel.github.io/striker4-calculator/
 
 スマートフォンでアクセスして使用できます。
 
