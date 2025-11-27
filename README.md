@@ -49,8 +49,8 @@ https://osakanalabel.github.io/striker4-calculator/
 
 ## リポジトリ情報
 
-- **GitHubリポジトリ**: https://github.com/sanukaku/striker4-calculator
-- **公開URL**: https://sanukaku.github.io/striker4-calculator/
+- **GitHubリポジトリ**: https://github.com/osakanalabel/striker4-calculator
+- **公開URL**: https://osakanalabel.github.io/striker4-calculator/
 
 ## ライセンス
 
